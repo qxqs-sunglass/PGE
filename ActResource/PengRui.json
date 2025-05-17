@@ -1,0 +1,14 @@
+{"name": "【丰饶之神】芃瑞", "role": "星",
+  "at": 500, "df":  200, "sp": 2, "rt": 4, "ids": 0, "vl": 0, "rh": 0, "ha": 0, "dr": 0,
+  "story": "角色故事：无",
+  "skills_普攻": "惠恩",
+  "skills_战技": "生机勃",
+  "skills_大招": "生命以求顺",
+  "skills_被动": "风雨听顺",
+  "skills_天赋": ["逆长", "洗涤", "盛穗"],
+  "buff_": {"【丰收】": "tar_our"},
+  "refresh_buff_act": false,
+  "passive_global": [true, true],
+  "author": "一叶木子",
+  "date": "2025.2.14"
+}
