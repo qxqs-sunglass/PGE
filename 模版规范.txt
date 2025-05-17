@@ -1,0 +1,36 @@
+# 必看！！！
+# evet_type: 触发事件类型，看着写就行
+"""触发类型:
+001:
+    0011: 计算伤害前
+    0012: 计算伤害后
+002：
+    0021: 减血量前
+    0022: 减血量后
+    0023: 减防后
+003:
+    0031: 加防前
+    0032: 加防后
+004:
+    0041: 回合开始
+    0042: 回合结束
+005:
+    0051: 在角色使用技能前
+    0052: 在角色使用技能后"""
+
+# class往下是模版, 如果不修改clear_axle, event_global, event_type就删掉这部分代码，默认为False, []
+# 在do_event函数是事件代码， 空着就行
+
+
+class Name(AxleActTemplate):
+    def __init__(self, name, user):
+        super().__init__()
+        self.name = name
+        self.user = user
+        self.clear_axle = False  # 抵达回合时是否移除
+        self.event_global = False  # 每个角色行动时都会触发
+        self.event_type = []  # 触发事件类型
+
+    def do_event(self):
+        """执行事件"""
+        pass
