@@ -1,4 +1,5 @@
 """天赋技能模块"""
+from modules.module_talent import ModuleTalent
 
 
 class Talent:
@@ -23,7 +24,7 @@ class Talent:
         }  # 天赋技能表
 
 
-class 万家灯火:
+class 万家灯火(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象
@@ -33,7 +34,7 @@ class 万家灯火:
         self.tag = "天赋"
 
 
-class 任务加速:
+class 任务加速(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象
@@ -43,7 +44,7 @@ class 任务加速:
         self.tag = "天赋"
 
 
-class 夜巡游:
+class 夜巡游(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象
@@ -53,7 +54,7 @@ class 夜巡游:
         self.tag = "天赋"
 
 
-class 扶摇:
+class 扶摇(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user
@@ -63,7 +64,7 @@ class 扶摇:
         self.tag = "天赋"
 
 
-class 千鸿难回天:
+class 千鸿难回天(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user
@@ -73,7 +74,7 @@ class 千鸿难回天:
         self.tag = "天赋"
 
 
-class 飞虹:
+class 飞虹(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user
@@ -83,7 +84,7 @@ class 飞虹:
         self.tag = "天赋"
 
 
-class 帝星极威:
+class 帝星极威(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象
@@ -93,7 +94,7 @@ class 帝星极威:
         self.tag = "天赋"
 
 
-class 绽华星闪:
+class 绽华星闪(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象
@@ -103,7 +104,7 @@ class 绽华星闪:
         self.tag = "天赋"
 
 
-class 星茧塑身:
+class 星茧塑身(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象
@@ -113,7 +114,7 @@ class 星茧塑身:
         self.tag = "天赋"
 
 
-class 执行官:
+class 执行官(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象
@@ -123,7 +124,7 @@ class 执行官:
         self.tag = "天赋"
 
 
-class 极限功率:
+class 极限功率(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象
@@ -133,7 +134,7 @@ class 极限功率:
         self.tag = "天赋"
 
 
-class 神明造物自我意识:
+class 神明造物自我意识(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象
@@ -144,7 +145,7 @@ class 神明造物自我意识:
         self.tag = "天赋"
 
 
-class 先攻:
+class 先攻(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象
@@ -155,7 +156,7 @@ class 先攻:
         self.tag = "天赋"
 
 
-class 传告:
+class 传告(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象
@@ -166,7 +167,7 @@ class 传告:
         self.tag = "天赋"
 
 
-class 启航:
+class 启航(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象
@@ -177,7 +178,7 @@ class 启航:
         self.tag = "天赋"
 
 
-class 葬敌:
+class 葬敌(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象
@@ -188,7 +189,7 @@ class 葬敌:
         self.tag = "天赋"
 
 
-class 葬己:
+class 葬己(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象

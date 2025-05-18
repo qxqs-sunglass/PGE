@@ -29,7 +29,7 @@ class GameChoose:
                                  "main_equip": (70, 225), "main_equip_fu": (10, 225),
                                  "helper_actor": (70, 300), "helper_actor_fu": (10, 300),
                                  "helper_equip": (70, 325), "helper_equip_fu": (10, 325),
-                                 "talent": (10, 400), "talent_fu": (70, 400)},
+                                 "talent": (70, 400), "talent_fu": (10, 400)},
                            "B": {"images": (900, 10), "player_name": (900, 80),
                                  "main_actor": (900, 200), "main_actor_fu": (835, 200),
                                  "main_equip": (900, 225), "main_equip_fu": (835, 225),
@@ -138,6 +138,10 @@ class GameChoose:
         self.equip_choose.init()  # 初始化武器选择界面
         self.bin_text = self.ai.bin_text.copy(self.screen)  # 复制版本号
 
+    def init_talent(self):
+        """初始化天赋选择"""
+        pass
+
     def init_choose_config(self):
         """初始化角色选择配置"""
         self.stage_list = [
@@ -151,7 +155,8 @@ class GameChoose:
             self.charge_tag_flow,  # 切换主助战标记, 主战->助战
             [self.charge_camp,  # 切换阵营B->A
              self.charge_tag_flow],  # and 切换主助战标记, 助战->主战
-            self.charge_tag_flow  # 切换阵营A->B
+            self.charge_tag_flow,  # 切换阵营A->B
+            self.init_talent
         ]  # 流程图
         self.key_bind_dict = self.control.key_bind_dict  # 绑定键盘事件
 
@@ -222,6 +227,8 @@ class GameChoose:
             for attr in temp["attr_use"]:
                 attr_temp.append(f"{self.attributes_name_fu[attr]}: {temp['attributes'][attr]}")
                 # "at: 100, df: 100, sp: 100, rt: 100" 类似这样的字符串
+        if self.now_choose == "talent":  # 天赋读取
+            pass
         # 保存选中数据
         data = {"name": temp["name"],
                 "name_base": temp.get("name_base", ""),
@@ -295,7 +302,7 @@ class GameChoose:
     def key_press(self, event):
         """键盘事件"""
         if event.keysym in self.key_bind_dict:
-            self.key_bind_dict[event.keysym]()
+            self.key_bind_dict[event.keysym]()  # 调用绑定的函数
 
     def begin_game(self):
         """开始游戏"""
