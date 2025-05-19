@@ -18,20 +18,39 @@ class ChooseControl(tk.Frame):
                                                       pos=self.allocation_plan["image"],
                                                       width=100, height=140)  # 当前选择的目标角色图像
         self.now_name = tk.StringVar()  # 当前选择的目标角色名称
-        self.name_base = ""  # 角色基础名称
         self.now_name.set("角色名称")  # 默认显示角色名称
         self.now_name_txt = TextModule(self.master, self.allocation_plan["name"], self.now_name,
                                        size=16, textvariable=True, color="grey")  # 当前选择的目标角色名称
+        # 介绍文本
+        self.intro1 = tk.StringVar()  # 介绍文本1
+        self.intro1.set("介绍文本1")  # 默认显示介绍文本1
+        self.intro1_txt = TextModule(self.master, self.allocation_plan["intro1"], self.intro1,
+                                     size=12, textvariable=True, color="grey",
+                                     width=420, height=10)  # 介绍文本1
+        self.intro2 = tk.StringVar()  # 介绍文本2
+        self.intro2.set("介绍文本2")  # 默认显示介绍文本2
+        self.intro2_txt = TextModule(self.master, self.allocation_plan["intro2"], self.intro2,
+                                     size=12, textvariable=True, color="grey",
+                                     width=200, height=2)  # 介绍文本2
+        # 属性文本
         self.attr_txt = []  # 属性文本
         for i in range(4):
             self.attr_txt.append(
                 TextModule(self.master, self.allocation_plan["attr"][i], "值：0", size=12,
                            color="grey")
             )  # 属性文本
+        # 角色技能文本
+        self.skills_txt = {}  # 角色技能文本
+        for i in ["common", "combat", "ultimate", "passive"]:
+            self.skills_txt[i] = TextModule(self.master, self.allocation_plan["skills"][i], "技能名称", size=12,
+                                            color="grey")
+
+        # 按键绑定
         self.key_bind_dict = {
             "space": self.enter_click
         }  # 按键绑定字典
         self.key_flag = False  # 按键标志位
+        self.now_choose = self.ai.now_choose  # 当前选择的角色/装备
 
     def draw(self):
         """绘制页面"""
@@ -40,17 +59,44 @@ class ChooseControl(tk.Frame):
         self.now_name_txt.draw()  # 绘制目标角色名称
         for a in self.attr_txt:
             a.draw()  # 绘制属性文本
+        self.intro1_txt.draw()  # 绘制介绍文本1
+        self.intro2_txt.draw()  # 绘制介绍文本2
+        for s in self.skills_txt.values():
+            s.draw()  # 绘制角色技能文本
 
     def undraw(self):
         """清除页面"""
         self.enter_but.undraw()  # 清除确认按钮
+        self.now_image.undraw()  # 清除目标角色图像
+        self.now_name_txt.undraw()  # 清除目标角色名称
+        for a in self.attr_txt:
+            a.undraw()  # 清除属性文本
+        self.intro1_txt.undraw()  # 清除介绍文本1
+        self.intro2_txt.undraw()  # 清除介绍文本2
+        for s in self.skills_txt:
+            s.undraw()  # 清除角色技能文本
 
     def modification_data(self, data):
         """更新模块data: 角色/装备数据，这里需要传入数据用于更新"""
-        self.now_name_txt.set_text(data["name"], color="black")  # 更新当前选择的目标角色名称
-        self.name_base = data["name_base"]  # 更新角色基础名称
-        self.now_image.set_image(data["image"])  # 更新目标角色图像
-        self.change_attr(self.attr_txt, data["attr"])  # 更新属性文本
+        # print(data)
+        if self.now_choose == "actor":  # 若当前选择角色，则更新角色数据
+            self.now_name_txt.set_text(data["name"], color="black")  # 更新当前选择的目标角色名称
+            self.now_image.set_image(data["image"])  # 更新目标角色图像
+            self.change_attr(self.attr_txt, data["attr"])  # 更新属性文本
+            self.intro1_txt.set_text(data["story"], color="black")  # 更新介绍文本
+            self.intro2_txt.set_text(data["role"], color="black")
+            self.change_skills(self.skills_txt, data["skills"])  # 更新角色技能文本
+        elif self.now_choose == "equip":  # 若当前选择装备，则更新装备数据
+            self.now_name_txt.set_text(data["name"], color="black")  # 更新当前选择的目标装备名称
+            self.now_image.set_image(data["image"])  # 更新目标装备图像
+            self.change_attr(self.attr_txt, data["attr"])  # 更新属性文本
+            self.intro1_txt.set_text(data["description"], color="black")  # 更新介绍文本
+            self.intro2_txt.set_text("", color="black")
+        elif self.now_choose == "talent":  # 若当前选择天赋，则更新天赋数据
+            self.now_name_txt.set_text(data["name"], color="black")  # 更新当前选择的目标天赋名称
+            self.intro1_txt.set_text(data["description"], color="black")  # 更新介绍文本
+            self.intro2_txt.set_text(data["tag"], color="black")
+
         self.key_flag = True  # 按键标志位置为True
         self.draw()  # 绘制页面
 
@@ -60,9 +106,14 @@ class ChooseControl(tk.Frame):
             return
         if self.ai.next_stage(self.now_name.get()):  # 进入下一流程
             return
+        # 重置页面数据
         self.now_name_txt.set_text("角色名称", color="grey")  # 重置当前选择的目标角色名称
         self.now_image.set_image(self.images.get_image("actor.png"))  # 重置目标角色图像
         self.change_attr(self.attr_txt, ["值：0", "值：0", "值：0", "值：0"], color="grey")  # 重置属性文本
+        self.intro1_txt.set_text("介绍文本1", color="grey")  # 重置介绍文本1
+        self.intro2_txt.set_text("介绍文本2", color="grey")  # 重置介绍文本2
+        for s in self.skills_txt.values():
+            s.set_text("技能名称", color="grey")  # 重置角色技能文本
         self.key_flag = False  # 按键标志位置为True
 
     @staticmethod
@@ -73,6 +124,11 @@ class ChooseControl(tk.Frame):
                 attr_list[i].set_text("", color=color)
             else:
                 attr_list[i].set_text(f"{value_list[i]}", color=color)
+
+    @ staticmethod
+    def change_skills(skills_dict, skill_list, color="black"):
+        """修改技能"""
+        pass
 
 
 

@@ -55,12 +55,12 @@ class ActTemplate:
         self.skill_list = []  # 角色的技能列表
         self.stats_buff = {}  # 角色的buff(包括Debuff和Buff)
         # 基础信息
-        self.name = ""  # 角色名称
-        self.name_des = ""  # 角色称号
-        self.name_base = ""  # 角色本名
-        self.role = ""  # 角色类型: 天\星\冥
-        self.story = ""  # 角色故事
-        self.author = ""  # 角色作者
+        self.name = "默认"  # 角色名称
+        self.name_des = "【】"  # 角色称号
+        self.name_base = "默认"  # 角色本名
+        self.role = "零"  # 角色类型: 天\星\冥
+        self.story = "人物故事：无"  # 角色故事
+        self.author = "秋雪青山"  # 角色作者
         self.date = "--2025.2.14--"  # 角色创作日期
         self.attributes_base = {"kr": 10, "kd": 50, "energy_max": 25}  # 角色的属性值
         self.attributes_extra = {}  # 角色的额外属性值; 格式为{名字: {属性名称: 属性值}}
@@ -367,7 +367,8 @@ class ActTemplate:
             "camp": self.camp,
             "role_type": self.role_type,
             "axle": self.axle,
-            "axle_yu": self.axle_yu
+            "axle_yu": self.axle_yu,
+            "skills": self.skills.keys()
         }
 
     def run_choose_command(self):

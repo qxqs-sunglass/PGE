@@ -36,8 +36,11 @@ class GameChoose:
                                  "helper_actor": (900, 300), "helper_actor_fu": (835, 300),
                                  "helper_equip": (900, 325), "helper_equip_fu": (835, 325),
                                  "talent": (900, 400), "talent_fu": (835, 400)}},
-            "Control": {"enter": (800, 550), "image": (10, 530), "name": (150, 550),
-                        "attr": [(150, 580), (250, 580), (150, 610), (250, 610)]}
+            "Control": {"enter": (850, 550), "image": (10, 530), "name": (150, 550),
+                        "attr": [(150, 580), (250, 580), (150, 610), (250, 610)],
+                        "intro1": (370, 470), "intro2": (150, 620),
+                        "skills": {"common": (370, 650), "combat": (500, 650),
+                                   "ultimate": (370, 680), "passive": (500, 680)}}
         }  # 角色布局方案
         # 其他
         self.now_flow_txt = None  # 当前流程提示
@@ -219,21 +222,38 @@ class GameChoose:
     def decide(self, temp):  # 这里的temp是选中的角色/武器数据
         """确定选择: 注：此处会在角色/武器内部调用"""
         attr_temp = []
+        # 保存选中数据
+        data = {}
         if self.now_choose == "actor":  # 角色属性读取
+            skills_temp = {}
             for attr in self.need_actor_attr:  # 读取角色属性
                 attr_temp.append(f"{self.attributes_name_fu[attr]}: {temp['attributes'][attr]}")
                 # "at: 100, df: 100, sp: 100, rt: 100" 类似这样的字符串
+            data = {
+                "name": temp["name"],
+                "name_base": temp.get("name_base", ""),
+                "attr": attr_temp,
+                "image": temp["image"],
+                "story": temp.get("story", ""),
+                "role": temp.get("role", ""),
+                "skills": temp.get("skills", "")
+            }
         if self.now_choose == "equip":  # 武器属性读取
             for attr in temp["attr_use"]:
                 attr_temp.append(f"{self.attributes_name_fu[attr]}: {temp['attributes'][attr]}")
                 # "at: 100, df: 100, sp: 100, rt: 100" 类似这样的字符串
-        if self.now_choose == "talent":  # 天赋读取
-            pass
-        # 保存选中数据
-        data = {"name": temp["name"],
-                "name_base": temp.get("name_base", ""),
+            data = {
+                "name": temp["name"],
                 "attr": attr_temp,
-                "image": temp["image"]}
+                "image": temp["image"],
+                "description": temp.get("description", "")
+            }
+        if self.now_choose == "talent":  # 天赋读取
+            data = {
+                "name": temp["name"],
+                "description": temp.get("description", ""),
+                "tag": temp.get("tag", "")
+            }
         self.control.modification_data(data)
 
     def next_stage(self, name):
@@ -385,3 +405,11 @@ class EquipChoose(tk.Frame):
         """隐藏装备选择界面"""
         for button in self.equip_buttons.values():
             button.undraw()
+
+
+class TalentChoose(tk.Frame):
+    def __init__(self, ai, screen):
+        """天赋选择模块
+        其中天赋数据需要在当前选择的角色数据中获取"""
+        super().__init__(screen)
+        self.ai = ai  # 上级self实例
