@@ -16,38 +16,42 @@ class GameChoose:
         self.screen = None
         # 角色选择
         self.actors = self.ai.actors  # 获取角色列表
-        self.actor_choose = None
+        self.actor_choose = None  # 角色选择（数据模块）
         # 武器选择
         self.equips = self.ai.equips  # 获取武器列表
-        self.equip_choose = None
+        self.equip_choose = None  # 武器选择（数据模块）
+        # 天赋选择
+        self.talents_choose = None  # 天赋选择（数据模块）
         # 界面初始化
         self.bin_text = None  # 版本号模块
         # 控制变量
         self.allocation_plan = {
-            "PlayerShow": {"A": {"images": (10, 10), "player_name": (10, 80),
-                                 "main_actor": (70, 200), "main_actor_fu": (10, 200),
-                                 "main_equip": (70, 225), "main_equip_fu": (10, 225),
-                                 "helper_actor": (70, 300), "helper_actor_fu": (10, 300),
-                                 "helper_equip": (70, 325), "helper_equip_fu": (10, 325),
-                                 "talent": (70, 400), "talent_fu": (10, 400)},
-                           "B": {"images": (900, 10), "player_name": (900, 80),
-                                 "main_actor": (900, 200), "main_actor_fu": (835, 200),
-                                 "main_equip": (900, 225), "main_equip_fu": (835, 225),
-                                 "helper_actor": (900, 300), "helper_actor_fu": (835, 300),
-                                 "helper_equip": (900, 325), "helper_equip_fu": (835, 325),
-                                 "talent": (900, 400), "talent_fu": (835, 400)}},
-            "Control": {"enter": (850, 550), "image": (10, 530), "name": (150, 550),
-                        "attr": [(150, 580), (250, 580), (150, 610), (250, 610)],
-                        "intro1": (370, 470), "intro2": (150, 620),
-                        "skills": {"common": (370, 650), "combat": (500, 650),
-                                   "ultimate": (370, 680), "passive": (500, 680)}}
+            "PlayerShow": {
+                "A": {"images": (10, 10), "player_name": (10, 80),
+                      "main_actor": (70, 200), "main_actor_fu": (10, 200),
+                      "main_equip": (70, 225), "main_equip_fu": (10, 225),
+                      "helper_actor": (70, 300), "helper_actor_fu": (10, 300),
+                      "helper_equip": (70, 325), "helper_equip_fu": (10, 325),
+                      "talent": (70, 400), "talent_fu": (10, 400)},
+                "B": {"images": (900, 10), "player_name": (900, 80),
+                      "main_actor": (900, 200), "main_actor_fu": (835, 200),
+                      "main_equip": (900, 225), "main_equip_fu": (835, 225),
+                      "helper_actor": (900, 300), "helper_actor_fu": (835, 300),
+                      "helper_equip": (900, 325), "helper_equip_fu": (835, 325),
+                      "talent": (900, 400), "talent_fu": (835, 400)}},
+            "Control": {
+                "enter": (850, 550), "image": (10, 530), "name": (150, 550),
+                "attr": [(150, 580), (250, 580), (150, 610), (250, 610)],
+                "intro1": (370, 470), "intro2": (150, 620),
+                "skills": {"common": (370, 650), "combat": (500, 650),
+                           "ultimate": (370, 680), "passive": (500, 680)}}
         }  # 角色布局方案
         # 其他
         self.now_flow_txt = None  # 当前流程提示
-        self.showA = None  # 玩家A的角色选择模块
-        self.showB = None  # 玩家B的角色选择模块
-        self.show_dict = None  # 角色选择模块字典
-        self.control = None  # 控制模块
+        self.showA = None  # 玩家A的角色选择模块（显示模块）
+        self.showB = None  # 玩家B的角色选择模块（显示模块）
+        self.show_dict = None  # 角色选择模块字典（显示模块）
+        self.control = None  # 控制模块（显示模块）
         self.get_actor_data = {
             "A": {},
             "B": {}
@@ -139,11 +143,12 @@ class GameChoose:
         self.actor_choose.init()  # 初始化角色选择界面
         self.equip_choose = EquipChoose(self, self.screen, self.equips)  # 实例化装备选择模块
         self.equip_choose.init()  # 初始化武器选择界面
+        self.talents_choose = TalentChoose(self, self.screen)  # 实例化天赋选择模块
         self.bin_text = self.ai.bin_text.copy(self.screen)  # 复制版本号
 
     def init_talent(self):
         """初始化天赋选择"""
-        pass
+        self.talents_choose.init()
 
     def init_choose_config(self):
         """初始化角色选择配置"""
@@ -159,7 +164,7 @@ class GameChoose:
             [self.charge_camp,  # 切换阵营B->A
              self.charge_tag_flow],  # and 切换主助战标记, 助战->主战
             self.charge_tag_flow,  # 切换阵营A->B
-            self.init_talent
+            [self.init_talent]
         ]  # 流程图
         self.key_bind_dict = self.control.key_bind_dict  # 绑定键盘事件
 
@@ -177,7 +182,7 @@ class GameChoose:
         elif self.now_choose == "equip":
             self.equip_choose.draw()
         elif self.now_choose == "talent":
-            pass
+            self.talents_choose.draw()
 
     def undraw(self):
         """隐藏游戏选择界面"""
@@ -192,7 +197,7 @@ class GameChoose:
         elif self.now_choose == "equip":
             self.equip_choose.undraw()
         elif self.now_choose == "talent":
-            pass
+            self.talents_choose.undraw()
 
     def draw_text(self):
         """绘制文本"""
@@ -334,7 +339,6 @@ class GameChoose:
         self.ai.game_main_show()  # 进入游戏
 
 
-
 class ActorChoose(tk.Frame):
     def __init__(self, ai, screen, actors: dict):
         super().__init__(screen)
@@ -413,3 +417,51 @@ class TalentChoose(tk.Frame):
         其中天赋数据需要在当前选择的角色数据中获取"""
         super().__init__(screen)
         self.ai = ai  # 上级self实例
+        self.actors = self.ai.actors  # 获取角色列表
+        self.get_actor_data = self.ai.get_actor_data  # 角色选择数据
+        self.talents_buttons = {}  # 天赋列表
+        self.pos = (220, 75)  # 模块位置
+        self.camp = "A"  # 阵营
+        self.camp_fu = {"A": "B", "B": "A"}  # 阵营切换
+
+    def init(self):
+        """初始化天赋选择界面"""
+        x = 0
+        y = 0
+        actorA = self.get_actor_data["A"]["主战"]
+        actorB = self.get_actor_data["B"]["主战"]
+        for talent in self.actors[actorA].talents:
+            button = ButtonModule(self.master, (self.pos[0] + x, self.pos[1] + y),
+                                  talent.name,
+                                  command=talent.run_choose_command,
+                                  wid_hei=(10, 2), size=9)
+            if x > 700:
+                x = 0
+                y += 30
+            else:
+                x += 100
+            self.talents_buttons[talent.name] = button
+
+    def init_talents(self, camp, name):
+        """初始化天赋选择界面"""
+        x = 0
+        y = 0
+        for talent_name in self.actors[name].talents:
+            button = ButtonModule(self.master, (self.pos[0] + x, self.pos[1] + y),
+                                  talent_name,
+                                  command=None,
+                                  wid_hei=(10, 2), size=9)
+            if x > 700:
+                x = 0
+                y += 30
+            else:
+                x += 100
+            self.talents_buttons[talent_name] = button
+
+    def draw(self):
+        """绘制天赋选择界面"""
+        pass
+
+    def undraw(self):
+        """隐藏天赋选择界面"""
+        pass

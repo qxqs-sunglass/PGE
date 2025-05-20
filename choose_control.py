@@ -117,7 +117,7 @@ class ChooseControl(tk.Frame):
         self.key_flag = False  # 按键标志位置为True
 
     @staticmethod
-    def change_attr(attr_list, value_list, color="black"):
+    def change_attr(attr_list, value_list, color="black") -> None:
         """修改属性"""
         for i in range(len(attr_list)):  # 遍历属性列表
             if i+1 > len(value_list):  # 若属性值列表长度不足，则不显示属性值
@@ -126,7 +126,7 @@ class ChooseControl(tk.Frame):
                 attr_list[i].set_text(f"{value_list[i]}", color=color)
 
     @ staticmethod
-    def change_skills(skills_dict, skill_list, color="black"):
+    def change_skills(skills_dict, skill_list, color="black") -> None:
         """修改技能"""
         pass
 

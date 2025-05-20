@@ -84,6 +84,18 @@ class ActTemplate:
         # self.tag_buff = {"名字": {"name": 属性名称, "turn": 持续回合数,
         #                  "superposition": 叠加次数, "active": 效果激活状态,
         #                  "type": 效果类型}}
+        self.common = ""  # 普攻
+        self.combat = ""  # 战技
+        self.ultimate = ""  # 大招
+        self.passive = ""  # 被动
+        self.talents = []  # 天赋列表
+        self.skills_may = {
+            "普攻": self.common,
+            "战技": self.combat,
+            "大招": self.ultimate,
+            "被动": self.passive,
+            "天赋": self.talents
+        }
         self.tick_passive = 0  # 被动技能的触发次数
         self.tick_passive_turn = 0  # 被动技能的冷却回合数
         self.passive_type = []  # 被动技能类型
@@ -196,10 +208,17 @@ class ActTemplate:
             if type(data[self.skills_name_fu[skill_name]]) == list:  # 加载技能列表
                 self.skill_list.extend(data[self.skills_name_fu[skill_name]])  # 多技能加载
                 self.skills_name_fu2[skill_name] = data[self.skills_name_fu[skill_name]]  # 加载技能名称的复数形式
+                self.skills_may[skill_name] = self.skills_name_fu2[skill_name]  # 保存技能名称
             else:  # 加载单个技能
                 self.skill_list.append(data[self.skills_name_fu[skill_name]])  # 加载技能名称
                 self.skills_name_fu2[skill_name] = data[self.skills_name_fu[skill_name]]  # 加载技能名称的复数形式
+                self.skills_may[skill_name] = self.skills_name_fu2[skill_name]  # 保存技能名称
         writelog("加载角色数据：" + self.name)
+        self.common = self.skills_may["普攻"]
+        self.combat = self.skills_may["战技"]
+        self.ultimate = self.skills_may["大招"]
+        self.passive = self.skills_may["被动"]
+        self.talents = self.skills_may["天赋"]
 
     def tick_tag_buff(self, buff_name, **kwargs):
         """增加buff"""
