@@ -149,6 +149,7 @@ class GameChoose:
     def init_talent(self):
         """初始化天赋选择"""
         self.talents_choose.init()
+        return "初始化天赋"
 
     def init_choose_config(self):
         """初始化角色选择配置"""
@@ -164,7 +165,7 @@ class GameChoose:
             [self.charge_camp,  # 切换阵营B->A
              self.charge_tag_flow],  # and 切换主助战标记, 助战->主战
             self.charge_tag_flow,  # 切换阵营A->B
-            [self.init_talent]
+            [self.init_talent, self.charge_choose_type]  # 初始化天赋并切换选择类型actor->equip
         ]  # 流程图
         self.key_bind_dict = self.control.key_bind_dict  # 绑定键盘事件
 
@@ -321,6 +322,7 @@ class GameChoose:
         """切换选择类型"""
         self.undraw_fu()
         self.now_choose = self.choose_type[self.now_choose]
+        self.control.now_choose = self.now_choose
         self.draw_fu()
         return f"切换选择类型：{self.now_choose}"
 
@@ -419,33 +421,26 @@ class TalentChoose(tk.Frame):
         self.ai = ai  # 上级self实例
         self.actors = self.ai.actors  # 获取角色列表
         self.get_actor_data = self.ai.get_actor_data  # 角色选择数据
-        self.talents_buttons = {}  # 天赋列表
+        self.talents_buttons_A = {}  # A天赋列表
+        self.talents_buttons_B = {}  # B天赋列表
+        self.talents_fu = {
+            "A": self.talents_buttons_A,
+            "B": self.talents_buttons_B
+        }  # 阵营指向
         self.pos = (220, 75)  # 模块位置
-        self.camp = "A"  # 阵营
+        self.camp = self.ai.camp  # 阵营
         self.camp_fu = {"A": "B", "B": "A"}  # 阵营切换
 
     def init(self):
         """初始化天赋选择界面"""
-        x = 0
-        y = 0
-        actorA = self.get_actor_data["A"]["主战"]
-        actorB = self.get_actor_data["B"]["主战"]
-        for talent in self.actors[actorA].talents:
-            button = ButtonModule(self.master, (self.pos[0] + x, self.pos[1] + y),
-                                  talent.name,
-                                  command=talent.run_choose_command,
-                                  wid_hei=(10, 2), size=9)
-            if x > 700:
-                x = 0
-                y += 30
-            else:
-                x += 100
-            self.talents_buttons[talent.name] = button
+        for camp in ["A", "B"]:
+            self.init_talents(self.talents_fu[camp], self.get_actor_data[camp]["主战"])
 
-    def init_talents(self, camp, name):
+    def init_talents(self, data_dict, name):
         """初始化天赋选择界面"""
         x = 0
         y = 0
+        print(self.actors[name].talents)
         for talent_name in self.actors[name].talents:
             button = ButtonModule(self.master, (self.pos[0] + x, self.pos[1] + y),
                                   talent_name,
@@ -456,12 +451,22 @@ class TalentChoose(tk.Frame):
                 y += 30
             else:
                 x += 100
-            self.talents_buttons[talent_name] = button
+            data_dict[talent_name] = button
 
     def draw(self):
         """绘制天赋选择界面"""
-        pass
+        if self.camp == "A":
+            for button in self.talents_buttons_A.values():
+                button.draw()
+        else:
+            for button in self.talents_buttons_B.values():
+                button.draw()
 
     def undraw(self):
         """隐藏天赋选择界面"""
-        pass
+        if self.camp == "A":
+            for button in self.talents_buttons_A.values():
+                button.undraw()
+        else:
+            for button in self.talents_buttons_B.values():
+                button.undraw()

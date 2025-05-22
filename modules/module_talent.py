@@ -11,13 +11,17 @@ class ModuleTalent:
         # 002:
         # 003:
         # 以上为基础属性，可以根据实际情况更改
-        self.decide = None  # 用于系统判定
+        self.choose_command = None  # 用于系统判定
 
     def init(self):
         pass
 
     def use(self, user, target, temp):
         pass
+
+    def run_choose_command(self):
+        """选择命令"""
+        self.choose_command(self.get_data())
 
     def get_data(self):
         """获取技能信息"""

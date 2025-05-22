@@ -39,6 +39,8 @@ class ChooseControl(tk.Frame):
                 TextModule(self.master, self.allocation_plan["attr"][i], "值：0", size=12,
                            color="grey")
             )  # 属性文本
+        # 基础变量
+        self.name_base = "角色名称"  # 角色名称基础变量
         # 角色技能文本
         self.skills_txt = {}  # 角色技能文本
         for i in ["common", "combat", "ultimate", "passive"]:
@@ -86,6 +88,7 @@ class ChooseControl(tk.Frame):
             self.intro1_txt.set_text(data["story"], color="black")  # 更新介绍文本
             self.intro2_txt.set_text(data["role"], color="black")
             self.change_skills(self.skills_txt, data["skills"])  # 更新角色技能文本
+            self.name_base = data.get("name_base", "角色名称")  # 更新角色名称基础变量
         elif self.now_choose == "equip":  # 若当前选择装备，则更新装备数据
             self.now_name_txt.set_text(data["name"], color="black")  # 更新当前选择的目标装备名称
             self.now_image.set_image(data["image"])  # 更新目标装备图像

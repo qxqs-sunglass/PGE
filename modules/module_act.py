@@ -387,7 +387,7 @@ class ActTemplate:
             "role_type": self.role_type,
             "axle": self.axle,
             "axle_yu": self.axle_yu,
-            "skills": self.skills.keys()
+            "skills": self.skills_may  # 这里仅提供技能名称
         }
 
     def run_choose_command(self):
