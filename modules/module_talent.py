@@ -29,6 +29,7 @@ class ModuleTalent:
             "name": self.name,
             "intro": self.intro,
             "description": self.description,
-            "tag": self.tag
+            "tag": self.tag,
+            "skill": self.use
         }
 

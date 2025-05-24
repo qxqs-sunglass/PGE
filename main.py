@@ -49,6 +49,7 @@ class Main(Settings):
                                 "主战B": "于人之法",
                                 "助战A": "樱弥散",
                                 "助战B": "测试用"}  # 游戏选中武器
+        self.game_talent_temp = ["auto", "auto"]  # 双方游戏天赋由系统自动选择
 
     def run(self):
         # 初始化

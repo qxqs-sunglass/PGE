@@ -42,7 +42,7 @@ class GameChoose:
             "Control": {
                 "enter": (850, 550), "image": (10, 530), "name": (150, 550),
                 "attr": [(150, 580), (250, 580), (150, 610), (250, 610)],
-                "intro1": (370, 470), "intro2": (150, 620),
+                "intro1": (370, 470), "intro2": (150, 640),
                 "skills": {"common": (370, 650), "combat": (500, 650),
                            "ultimate": (370, 680), "passive": (500, 680)}}
         }  # 角色布局方案
@@ -57,11 +57,13 @@ class GameChoose:
             "B": {}
         }  # 角色/武器选择数据
         self.get_equip_data = {}
+        self.get_talent_data = []
         # 控制变量
         self.camp = "A"  # 阵营
         self.camp_fu = {"A": "B", "B": "A"}  # 阵营互换
         self.now_choose = "actor"  # 当前选择类型
         self.choose_type = {"actor": "equip", "equip": "talent"}
+        self.forbid_active = False  # 禁选模式激活
         self.flow = "主战"  # 当前正在进行的选择
         self.flow_fu = {"主战": "助战", "助战": "武器", "武器": "天赋"}
         self.tag_flow = "主战"
@@ -165,7 +167,8 @@ class GameChoose:
             [self.charge_camp,  # 切换阵营B->A
              self.charge_tag_flow],  # and 切换主助战标记, 助战->主战
             self.charge_tag_flow,  # 切换阵营A->B
-            [self.init_talent, self.charge_choose_type]  # 初始化天赋并切换选择类型actor->equip
+            [self.init_talent, self.charge_choose_type, self.charge_flow],  # 初始化天赋并切换选择类型equip->talent, 武器->天赋
+            self.charge_camp,  # 切换阵营B->A
         ]  # 流程图
         self.key_bind_dict = self.control.key_bind_dict  # 绑定键盘事件
 
@@ -255,10 +258,12 @@ class GameChoose:
                 "description": temp.get("description", "")
             }
         if self.now_choose == "talent":  # 天赋读取
+            # print(temp)
             data = {
                 "name": temp["name"],
                 "description": temp.get("description", ""),
-                "tag": temp.get("tag", "")
+                "tag": temp.get("tag", ""),
+                "skill": temp.get("skill", "auto")
             }
         self.control.modification_data(data)
 
@@ -267,25 +272,39 @@ class GameChoose:
         active = True  # 标记是否切换流程
         if self.now_choose == "actor":
             self.actor_choose.actor_buttons[name].lock()
+            active = False
+            writelog(f"选择角色：{self.camp} {self.flow} {name}")
+            if self.forbid_active:  # 禁选模式激活
+                return
             self.show_dict[self.camp].charge_info(
                 self.flow_fu2[self.flow],
                 self.control.name_base
             )
-            active = False
             self.get_actor_data[self.camp][self.flow] = name
-            writelog(f"选择角色：{self.camp} {self.flow} {name}")
+
         elif self.now_choose == "equip":
             self.equip_choose.equip_buttons[name].lock()
+            active = False
+            writelog(f"选择武器：{self.tag_flow} {self.camp} {name}")
+            if self.forbid_active:  # 禁选模式激活
+                return
             self.show_dict[self.camp].charge_info(
                 f"{self.flow_fu2[self.tag_flow]}_{self.flow_fu2[self.flow]}",
                 self.control.now_name.get()
             )
-            active = False
             self.get_equip_data[self.tag_flow + self.camp] = name
-            writelog(f"选择武器：{self.tag_flow} {self.camp} {name}")
+
         elif self.now_choose == "talent":
+            self.talents_choose.talents_fu[self.camp][name].lock()
             active = False
             writelog(f"选择天赋：{self.tag_flow} {self.camp} {name}")
+            if self.forbid_active:  # 禁选模式激活
+                return
+            self.show_dict[self.camp].charge_info(
+                "talent",
+                self.control.now_name.get()
+            )
+            self.get_talent_data.append(self.control.talent_skill)
 
         if active:  # 若为True，则意味着没有触发
             return
@@ -303,19 +322,30 @@ class GameChoose:
         self.stage.set(self.stage_fu[self.flow])
         self.stage2.set(f"选择方：{self.camp}")
 
+    def charge_forbid_active(self):
+        """禁选模式激活"""
+        self.forbid_active = not self.forbid_active
+        return f"禁选模式激活：{self.forbid_active}"
+
     def charge_camp(self):
         """切换阵营"""
+        self.undraw_fu()
         self.camp = self.camp_fu[self.camp]
+        self.draw_fu()
         return f"切换阵营：{self.camp}"
 
     def charge_tag_flow(self):
         """切换主助战标记"""
+        self.undraw_fu()
         self.tag_flow = self.tag_flow_fu[self.tag_flow]
+        self.draw_fu()
         return f"切换主助战标记：{self.tag_flow}"
 
     def charge_flow(self):
         """切换流程"""
+        self.undraw_fu()
         self.flow = self.flow_fu[self.flow]
+        self.draw_fu()
         return f"切换流程：{self.flow}"
 
     def charge_choose_type(self):
@@ -440,11 +470,13 @@ class TalentChoose(tk.Frame):
         """初始化天赋选择界面"""
         x = 0
         y = 0
-        print(self.actors[name].talents)
+        # print(self.actors[name].talents)
         for talent_name in self.actors[name].talents:
+            # print(talent_name)
+            self.actors[name].skills[talent_name].choose_command = self.ai.decide
             button = ButtonModule(self.master, (self.pos[0] + x, self.pos[1] + y),
                                   talent_name,
-                                  command=None,
+                                  command=self.actors[name].skills[talent_name].run_choose_command,
                                   wid_hei=(10, 2), size=9)
             if x > 700:
                 x = 0
@@ -455,6 +487,7 @@ class TalentChoose(tk.Frame):
 
     def draw(self):
         """绘制天赋选择界面"""
+        self.camp = self.ai.camp  # 阵营
         if self.camp == "A":
             for button in self.talents_buttons_A.values():
                 button.draw()

@@ -41,6 +41,7 @@ class ChooseControl(tk.Frame):
             )  # 属性文本
         # 基础变量
         self.name_base = "角色名称"  # 角色名称基础变量
+        self.talent_skill = {}  # 用于存储所选的天赋技能；格式：{天赋名称：技能}
         # 角色技能文本
         self.skills_txt = {}  # 角色技能文本
         for i in ["common", "combat", "ultimate", "passive"]:
@@ -99,6 +100,7 @@ class ChooseControl(tk.Frame):
             self.now_name_txt.set_text(data["name"], color="black")  # 更新当前选择的目标天赋名称
             self.intro1_txt.set_text(data["description"], color="black")  # 更新介绍文本
             self.intro2_txt.set_text(data["tag"], color="black")
+            self.talent_skill[data["name"]] = data["skill"]  # 更新所选的天赋技能
 
         self.key_flag = True  # 按键标志位置为True
         self.draw()  # 绘制页面
