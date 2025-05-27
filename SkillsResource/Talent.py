@@ -58,7 +58,7 @@ class 扶摇(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user
-        self.name = "飞鸿"
+        self.name = "扶摇"
         self.intro = "简介：\n提高暴击率"
         self.description = "详细：\n【战技】额外+20%暴击率"
         self.tag = "天赋"
@@ -68,7 +68,7 @@ class 千鸿难回天(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user
-        self.name = "飞鸿"
+        self.name = "千鸿难回天"
         self.intro = "简介：\n加速自身"
         self.description = "详细：\n释放【百雀难回巢】后行动轴+2"
         self.tag = "天赋"
@@ -78,7 +78,7 @@ class 飞虹(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user
-        self.name = "飞鸿"
+        self.name = "飞虹"
         self.intro = "简介：\n提高伤害，并无视一定防御"
         self.description = "详细：\n【飞鸿】+100%伤害倍率，且无视对方100防御"
         self.tag = "天赋"
@@ -88,7 +88,7 @@ class 帝星极威(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象
-        self.name = "万家灯火"  # 名称
+        self.name = "帝星极威"  # 名称
         self.intro = "简介：\n增加造成的伤害"  # 介绍
         self.description = "详细：\n【星烁】状态下额外增加40%伤害"  # 描述
         self.tag = "天赋"
@@ -98,7 +98,7 @@ class 绽华星闪(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象
-        self.name = "万家灯火"  # 名称
+        self.name = "绽华星闪"  # 名称
         self.intro = "简介：\n增加回能"  # 介绍
         self.description = "详细：\n攻击拥有【罪星】的目标时额外回1能量"  # 描述
         self.tag = "天赋"
@@ -108,7 +108,7 @@ class 星茧塑身(ModuleTalent):
     def __init__(self, user):
         super().__init__()
         self.user = user  # 用户对象
-        self.name = "万家灯火"  # 名称
+        self.name = "星茧塑身"  # 名称
         self.intro = "简介：\n释放大招回复血量"  # 介绍
         self.description = "详细：\n进入【星烁】状态时回复自身20%血量"  # 描述
         self.tag = "天赋"

@@ -85,6 +85,10 @@ class GameChoose:
         self.stage_list = []
         # 其他
         self.need_actor_attr = ["at", "df", "sp", "rt"]  # 角色属性
+        # 读秒组件
+        self.read_time = tk.StringVar()
+        self.read_time.set("")
+        self.read_time_txt = None
         # 武器属性由内部模块读取
         self.attributes_name_fu = {
             "at": "攻击力", "df": "防御力",
@@ -115,6 +119,7 @@ class GameChoose:
         self.now_choose = "actor"  # 当前选择类型
         self.flow = "主战"  # 当前正在进行的选择
         self.tag_flow = "主战"  # 主助战标记
+        self.read_time.set("")  # 重置读秒组件
 
     def init_screen(self):
         """初始化游戏选择界面"""
@@ -135,6 +140,9 @@ class GameChoose:
         self.stage_txt2 = TextModule(self.screen, (600, 50), self.stage2,
                                      size=14, width=400, textvariable=True,
                                      pos_mode="center")  # 当前流程提示
+        self.read_time_txt = TextModule(self.screen, (600, 150), self.read_time,
+                                        size=20, width=400, textvariable=True,
+                                        pos_mode="center")  # 读秒组件
 
         self.showA = ChooseShow(self, self.screen, self.allocation_plan["PlayerShow"]["A"])  # 实例化玩家A的角色选择模块
         self.showB = ChooseShow(self, self.screen, self.allocation_plan["PlayerShow"]["B"])  # 实例化玩家B的角色选择模块
@@ -208,12 +216,14 @@ class GameChoose:
         self.bin_text.draw()
         self.stage_txt.draw()
         self.stage_txt2.draw()
+        self.read_time_txt.draw()
 
     def undraw_text(self):
         """隐藏文本"""
         self.bin_text.undraw()
         self.stage_txt.undraw()
         self.stage_txt2.undraw()
+        self.read_time_txt.undraw()
 
     def open(self):
         """打开游戏选择界面"""
@@ -234,7 +244,6 @@ class GameChoose:
         # 保存选中数据
         data = {}
         if self.now_choose == "actor":  # 角色属性读取
-            skills_temp = {}
             for attr in self.need_actor_attr:  # 读取角色属性
                 attr_temp.append(f"{self.attributes_name_fu[attr]}: {temp['attributes'][attr]}")
                 # "at: 100, df: 100, sp: 100, rt: 100" 类似这样的字符串
@@ -363,8 +372,14 @@ class GameChoose:
 
     def begin_game(self):
         """开始游戏"""
+        self.read_time.set("3")   # 读取时间
+        for i in range(3):  # 延时3秒
+            self.ai_screen.after(1000)  # 延时3秒
+            self.read_time.set(str(3 - i))  # 显示剩余时间
+            self.ai_screen.update()  # 更新窗口
         self.ai.game_actor_temp = self.get_actor_data
         self.ai.game_equip_temp = self.get_equip_data
+        self.ai.game_talent_temp = self.get_talent_data
         writelog("选择角色：" + str(self.get_actor_data))
         writelog("选择武器：" + str(self.get_equip_data))
         self.close()
