@@ -24,3 +24,9 @@ class Skills:
         if name not in self.skills:
             return None
         return self.skills[name]
+
+
+class SkillTest:
+    def __init__(self):
+        """2.0技能测试类"""
+

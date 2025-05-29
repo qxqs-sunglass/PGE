@@ -23,6 +23,7 @@ class SkillModule:
             "战技": self.use_combat,
             "大招": self.use_ultimate
         }
+        self.attributes = {}  # 附加属性
 
     def init(self):
         """初始化技能模块"""
@@ -104,3 +105,19 @@ class SkillModule:
     def error_msg(self, msg):
         """错误信息"""
         writelog(f"技能模块错误：{msg}")
+
+    def call_act_attr(self, attr_name) -> int:
+        """调用自身属性: 获取属性值
+        attr_name: 属性名称"""
+        return self.user.attributes.get(attr_name, 1)
+
+    def call_in_attr(self, attr_name) -> int:  # 这里是附加属性的调用
+        """调用自身属性: 获取属性值
+        attr_name: 属性名称"""
+        return self.attributes.get(attr_name, 1)
+
+    def call_out_attr(self, attr_name, value) -> None:
+        """调用自身属性: 设置属性值
+        attr_name: 属性名称
+        value: 属性值"""
+        self.attributes[attr_name] = value

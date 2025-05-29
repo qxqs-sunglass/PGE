@@ -1,0 +1,10 @@
+{
+  "name": "测试用1",
+  "intro": "测试用2",
+  "description": "测试用3",
+  "tag": "普攻",
+  "energy_add": 1,
+  "attributes": {
+    "at": 100
+  }
+}
