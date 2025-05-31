@@ -1,0 +1,7 @@
+call.callAct()  # 强调这里编写的是Act对象
+
+
+def main{
+    call.system.name = "苏晓"
+}
+
