@@ -1,4 +1,5 @@
-# from modules.module_act import ActTemplate
+from modules.module_act import ActTemplate
+import CodCode
 
 
 class LoadAct:
