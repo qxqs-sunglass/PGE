@@ -69,14 +69,8 @@ class LoadAct:
             s = ""
             t = []
             for msg in line:
-                if msg == " ":
-                    s = ""
-                    continue
+                """在这里解析属性"""
                 s += msg
-                if s in self.all_str:
-                    print(2, s)
-                    t.append(s)
-                    s = ""
             print(3, t)
             data.append(t)
         print(4, data)
