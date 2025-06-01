@@ -1,5 +1,9 @@
-def main{
-    call.callAct()  # 强调这里编写的是Act对象
-    call.system.name = "苏晓"
+main{
+    callAct()  # 强调这里编写的是Act对象
+    # 这里可以编写其他代码
+    name = "苏晓"
+    attributes={
+        "at": 100
+    }
 }
 
