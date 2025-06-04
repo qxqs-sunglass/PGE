@@ -44,6 +44,7 @@ class Load:
         region_start = 0  # 代码块开始位置
         region_end = 0  # 代码块结束位置
         # 遍历代码
+        temp = []
         for line in code.split("\n"):
             # 跳过空行
             if not line.strip():
@@ -53,9 +54,9 @@ class Load:
                 if "#" in msg:
                     break
                 print("字符：", msg)
+                temp.append(msg)
                 # 解析消息
-                self.parse_msg(msg)
-
+        print("temp: ", temp, len(temp))
         print("1 ", region_name)
         print("2 ", region_content)
         print("3 ", region_type)
@@ -68,11 +69,20 @@ class Load:
             "region_end": region_end  # 代码块结束位置
         }
 
-    def parse_msg(self, msg: str) -> None:
+    def parse_msg(self, msg: str) -> list:
         """解析消息"""
-        for t in BRACKETS_STR:
-            if t in msg:
-                self.bracket_count(t)
+        # 解析字符串
+        temp = []
+        for s in SPECIAL_STR:
+            if not msg.startswith(s):
+                continue
+            t = msg.split(s)
+            for m in t:
+                temp.append(m)
+                temp.append(s)
+            temp.pop(-1)
+            break
+        return temp
 
     def bracket_count(self, s: str) -> bool:
         """括号计数

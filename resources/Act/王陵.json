@@ -1,0 +1,48 @@
+{
+  "CALL_TYPE": "Actor",
+  "Actor": {
+    "name": "王陵",
+    "role": "天",
+    "attributes": {
+      "at": 400, "df": 100, "sp": 3, "rt": 4, "ids": 0, "vl": 0, "rh": 0, "ha": 0, "dr": 0
+    },
+    "common": "执法",
+    "combat": "执法支援",
+    "ultimate": "黎明前的血色",
+    "passive": "加班中",
+    "talent": ["万家灯火", "任务加速", "夜巡游"],
+    "tick_passive": 0,
+    "tick_passive_turn": 2,
+    "passive_type": ["0042"],
+    "image_name": "王陵.png",
+    "author": "一叶木子",
+    "date": "2025.2.14",
+    "story": "角色故事：人间神州地区执事，神州三大特殊小队之执法小队队长，负责处理寻常超凡事件。原为寻常打工人，于“大日圣典”中成就超凡，踏上游猎之途，加入人间，因其任劳任怨，刻苦努力，经郑天提拔新人之事，成就三大特殊小队队长"
+  },
+  "Skill": {
+    "common": {
+      "name": "执法",
+      "command": []
+    },
+    "combat": {
+      "name": "执法支援"
+    },
+    "ultimate": {
+      "name": "黎明前的血色"
+    },
+    "passive": {
+      "name": "加班中"
+    },
+    "talent": {
+      "val1": {
+        "name": "万家灯火"
+      },
+      "val2": {
+        "name": "任务加速"
+      },
+      "val3": {
+        "name": "夜巡游"
+      }
+    }
+  }
+}
