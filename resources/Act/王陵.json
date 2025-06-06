@@ -43,16 +43,16 @@
     "passive": {
       "name": "加班中"
     },
-    "talent": {
-      "val1": {
+    "talent": [
+      {
         "name": "万家灯火"
       },
-      "val2": {
+      {
         "name": "任务加速"
       },
-      "val3": {
+      {
         "name": "夜巡游"
       }
-    }
+    ]
   }
 }
