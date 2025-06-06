@@ -2,7 +2,7 @@ from .AllStr import *
 from copy import deepcopy
 
 
-class Load:
+class LoadCC:
     def __init__(self):
         """加载文件模块"""
         # 各种计数器

@@ -22,7 +22,17 @@
   "Skill": {
     "common": {
       "name": "执法",
-      "command": []
+      "intro": "对敌人造成一定伤害，并加速自身",
+      "desc": "对目标造成基于自身攻击100%的伤害，对自身行动轴+2。",
+      "tag": "普攻",
+      "energy_add": 1,
+      "attributes": {
+        "sp": 2
+      },
+      "command": {
+        "damage": "at",
+        "speed": 2
+      }
     },
     "combat": {
       "name": "执法支援"

@@ -10,20 +10,24 @@ class SkillModule:
         self.intro = "技能模块"
         self.description = "技能模块"
         self.tag = "技能类型"
+        self.attributes = {}  # 附加属性
+        self.commands = {}  # use指令
         self.energy_cost = 0  # 能量消耗
         self.energy_add = 0  # 能量增加
-        # 以上两个需要在子类中定义
-        self.energy_active = True  # 是否需要消耗能量, 默认需要
-        self.main_num_sub_active = True  # 是否消耗战技点, 默认消耗
-        self.main_num_add_active = True  # 是否增加战技点, 默认增加
-        self.helper_num_sub_active = True  # 是否消耗支援技能点, 默认消耗
-        self.helper_num_add_active = False  # 是否增加支援技能点, 默认不增加
+        # 以上两个可选参数，可在json文件中定义
+        self.energy_sys_mode = "auto"  # （auto/manual）能量系统模式, 默认为auto, 控制energy_active是否手动设置
+        # 当在初始化中检测到energy_active的存在时, 系统会自动设置energy_sys_mode为manual，也可手动设置
+        # 其他的对于energy_sys_mode的设置, 由数据自行决定
+        self.energy_active = False  # 是否需要消耗能量, 默认不需要, 在对技能初始化时可由系统设置
+        self.main_num_sub_active = True  # 是否消耗战技点, 默认消耗, 在对技能初始化时可由系统设置
+        self.main_num_add_active = True  # 是否增加战技点, 默认增加, 在对技能初始化时可由系统设置
+        self.helper_num_sub_active = True  # 是否消耗支援技能点, 默认消耗, 在对技能初始化时可由系统设置
+        self.helper_num_add_active = False  # 是否增加支援技能点, 默认不增加, 在对技能初始化时可由系统设置
         self.use_tick = {
             "普攻": self.use_common,
             "战技": self.use_combat,
             "大招": self.use_ultimate
         }
-        self.attributes = {}  # 附加属性
 
     def init(self):
         """初始化技能模块"""
@@ -35,7 +39,6 @@ class SkillModule:
 
     def use(self, target, our, msgs):
         """使用技能"""
-        # 计算大招能量消耗
         self.use_tick[msgs["tag"][0]](target, our, msgs)
 
     def use_ultimate(self, target, our, msgs):

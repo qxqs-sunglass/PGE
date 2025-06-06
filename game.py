@@ -539,17 +539,6 @@ class GameMain:
         # 在造成伤害后使用
         self.use_tick(target=target, our=our, temp=temp, actor=actor, tick_type="0012")
 
-    def df(self, temp, camp, target, our, actor):
-        """防御力"""
-        # 在加防御前使用
-        self.use_tick(target=target, our=our, temp=temp, actor=actor, tick_type="0031")
-
-        self.play[camp]["df"] += temp["df"]
-        self.message_viewer.add_message(f"{our['name']}的角色防御力变化了{temp['df']}", "tick")
-
-        # 在加防御后使用
-        self.use_tick(target=target, our=our, temp=temp, actor=actor, tick_type="0032")
-
     def speed(self, temp, camp, target, our, actor):
         """加速"""
         self.message_viewer.add_message(f"{our['name']}的角色加速了{temp['speed']}", "tick")
@@ -561,8 +550,14 @@ class GameMain:
 
     def shield(self, temp, camp, target, our, actor):
         """护盾值"""
+        # 在加护盾前使用
+        self.use_tick(target=target, our=our, temp=temp, actor=actor, tick_type="0031")
+
         self.play[self.camp]["sh"] += temp["shield"]
         self.message_viewer.add_message(f"{our['name']}的护盾值增加了{temp['shield']}", "tick")
+
+        # 在加护盾后使用
+        self.use_tick(target=target, our=our, temp=temp, actor=actor, tick_type="0032")
 
     def work_out_damage(self, temp, camp, target, our, actor):
         """计算伤害"""
