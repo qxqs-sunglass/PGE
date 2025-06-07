@@ -7,6 +7,6 @@ print("当前CodC版本：", __version__)
 
 __all__ = [
     "loadCC", "__version__", "__author__",
-    "CALL_STR"
+    "CALL_STR", "loadJS"
 ]
 
