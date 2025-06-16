@@ -35,23 +35,35 @@
       }
     },
     "combat": {
-      "name": "执法支援"
+      "name": "执法支援",
+      "tag": "战技",
+      "command": {}
     },
     "ultimate": {
-      "name": "黎明前的血色"
+      "name": "黎明前的血色",
+      "tag": "大招",
+      "command": {}
     },
     "passive": {
-      "name": "加班中"
+      "name": "加班中",
+      "tag": "被动",
+      "command": {}
     },
     "talent": [
       {
-        "name": "万家灯火"
+        "name": "万家灯火",
+        "tag": "天赋",
+        "command": {}
       },
       {
-        "name": "任务加速"
+        "name": "任务加速",
+        "tag": "天赋",
+        "command": {}
       },
       {
-        "name": "夜巡游"
+        "name": "夜巡游",
+        "tag": "天赋",
+        "command": {}
       }
     ]
   }
